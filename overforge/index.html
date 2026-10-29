@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex, nofollow" /><!-- Poki 심사용 미리보기(비공개 링크) — 검색 노출 금지 -->
+    <meta charset="UTF-8" />
+    <!-- 모바일: 확대/축소 막고 화면 폭에 맞춤. viewport-fit=cover 로 노치 영역까지 사용 -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="description" content="Overforge — push your luck: forge your blade higher, hunt monsters for gold and decide when to stop before it drops." />
+    <link rel="icon" href="data:," /><!-- favicon 404 콘솔 에러 방지 -->
+    <title>Overforge</title>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background: #0d0d1a;
+        overflow: hidden;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: none;
+        overscroll-behavior: none;
+      }
+      /*
+        레터박스 중앙정렬 — 세로 게임을 데스크톱 16:9 iframe 에서 양옆 패딩으로 표시(CrazyGames FAQ: portrait 는 side padding 권장).
+        - position:fixed + inset:0 로 뷰포트를 100% 정확히 덮는다(100vw 는 스크롤바 폭 포함, 100vh 는 모바일 툴바 무시 — 둘 다 안 씀).
+        - 정렬은 CSS flex 에만 맡기고 Phaser 는 autoCenter: NO_CENTER (둘 다 켜면 margin+flex 여백이 겹쳐 한쪽으로 쏠림).
+        - 캔버스 '크기'는 Phaser Scale.FIT 이 계산하되, 부모 크기는 shared/gd-flow.js(광고·레이아웃 흐름 모듈) 가 레이아웃 확정 후
+          직접 측정해 setParentSize() 로 밀어넣는다(FIT 의 '한 프레임 늦은 부모 크기' 버그 우회).
+      */
+      #game-container {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      #game-container canvas {
+        display: block;
+        margin: 0;
+        max-width: 100%;
+        max-height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game-container"></div>
+    <!-- 광고 대기/재개/회전 안내 오버레이(DOM)는 shared/gd-flow.js 가 여기 주입한다 -->
+
+    <!-- Phaser 3 (로컬 번들, 전역 window.Phaser) -->
+    <script src="./shared/vendor/phaser.min.js"></script>
+
+    <!-- 게임 로직 (ES 모듈: ./shared/ 모듈을 import). ?v= 캐시버스팅 — 릴리스마다 올릴 것 -->
+    <script type="module" src="./game.js?v=cg2"></script>
+  </body>
+</html>
